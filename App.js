@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, StatusBar, TextInput, Dimensions, Platform, ScrollView } from 'react-native';
 import { AppLoading } from 'expo';
 import ToDo from "./ToDo";
-import uuidv1 from "uuid/v1"
+import uuidv1 from "uuid/v1";
+import PropTypes from "prop-types";
 
 
 const { height, width } = Dimensions.get("window")
@@ -11,7 +12,8 @@ export default class App extends React.Component {
 
   state = {
     newToDo: "",
-    loadedTodo: false
+    loadedTodo: false,
+    toDos: {}
   };
 
   componentDidMount = () => {
@@ -19,7 +21,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { newToDo, loadedTodo } = this.state;
+    const { newToDo, loadedTodo, toDos } = this.state;
+    console.log(toDos)
     if (!loadedTodo){
       return <AppLoading />;
     }
@@ -38,7 +41,7 @@ export default class App extends React.Component {
           autoCorrect={false} 
           onSubmitEditing={this._addToDo} />
           <ScrollView contentContainerStyle={styles.todostyle}>
-            <ToDo text={"Hello I'm a To Do"}/>
+            {Object.values(toDos).map(toDo => <ToDo key={toDo.id} {...toDo} deleteTodo={this._deleteTodo}/>)}
           </ScrollView>
         </View>
       </View>
@@ -78,6 +81,11 @@ export default class App extends React.Component {
         return { ...newState }
       })
     }
+  }
+  _deleteTodo = (id) => {
+    this.setState(prevState => {
+        const toDos = prevState.toDos
+    })
   }
 }
 
