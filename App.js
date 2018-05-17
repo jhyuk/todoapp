@@ -84,7 +84,13 @@ export default class App extends React.Component {
   }
   _deleteTodo = (id) => {
     this.setState(prevState => {
-        const toDos = prevState.toDos
+        const toDos = prevState.toDos;
+        delete toDos[id];
+        const newState = {
+          ...prevState,
+          ...toDos
+        }
+        return { ...newState }  
     })
   }
 }
